@@ -34,7 +34,7 @@ glfw.window_hint(glfw.SAMPLES, 4)
 window = glfw.create_window(1280, 800, "MMD", None, None)
 glfw.make_context_current(window)
 viewer = mmd.MMDViewer()
-viewer.set_resource_path("/path/to/your/resource") #Resource usually in the build/saba folder
+viewer.set_resource_path("/path/to/your/resource") #Resource资源文件夹一般在编译完成后的build/saba文件夹内
 viewer.init()
 viewer.load_model("/path/to/your/model.pmx")
 viewer.load_vmd("/path/to/your/motion.vmd")
