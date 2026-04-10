@@ -1,6 +1,6 @@
 # saba-python
-### [English](https://github.com/BinaryCoderXY/saba-python/blob/main/README.md)
-给项目[Saba](https://github.com/benikabocha/saba)写的python支持| MMD (MikuMikuDance) 实时渲染 &amp; 由python控制骨骼，可以渲染vmd动作和pmx模型.由一名初中生制作。
+### [English](https://github.com/BinaryCoderXY/saba-python/blob/main/README.md)  [中文](https://github.com/BinaryCoderXY/saba-python/blob/main/README_ch.md) 
+给项目[Saba](https://github.com/benikabocha/saba)写的python支持| MMD (MikuMikuDance) 实时渲染 （我修改了部分Saba的源代码）&amp; 由python控制骨骼，可以渲染vmd动作和pmx模型.由一名初中生制作。
 # Features
 - Saba MMD的Python 绑定
 - 加载PMX模型
