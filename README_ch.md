@@ -74,4 +74,4 @@ while not glfw.window_should_close(window):
 viewer.close()
 glfw.terminate()
 ```
-这个**blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.******
+这个**blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.**
