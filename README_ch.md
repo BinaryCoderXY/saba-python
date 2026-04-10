@@ -11,6 +11,9 @@
 # Installation
 通过cmake和make进行编译
 ```bash
+git clone https://github.com/BinaryCoderXY/saba-python.git
+cd saba-python
+git submodule update --init --recursive
 mkdir build 
 cd build
 cmake ..

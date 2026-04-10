@@ -1,4 +1,5 @@
 # saba-python
+### [English](https://github.com/BinaryCoderXY/saba-python/blob/main/README.md) [中文](https://github.com/BinaryCoderXY/saba-python/blob/main/README_ch.md) 
 Python binding for [Saba](https://github.com/benikabocha/saba) library | MMD (MikuMikuDance) real-time rendering &amp; bone control in Python,can render VMD motion and PMX model.Made by a junior high school student.
 # Features
 - Python binding for Saba MMD renderer
@@ -10,6 +11,9 @@ Python binding for [Saba](https://github.com/benikabocha/saba) library | MMD (Mi
 # Installation
 Compile by using cmake and make
 ```bash
+git clone https://github.com/BinaryCoderXY/saba-python.git
+cd saba-python
+git submodule update --init --recursive
 mkdir build 
 cd build
 cmake ..
