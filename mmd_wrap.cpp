@@ -1057,8 +1057,6 @@ saba::MMDNode *Model::getBone(const std::string &name)
 
     return nodeMgr->GetMMDNode(name);
 }
-
-// 获取表情
 saba::MMDMorph *Model::getMorph(const std::string &name)
 {
     if (!m_mmdModel)
@@ -1068,30 +1066,18 @@ saba::MMDMorph *Model::getMorph(const std::string &name)
         return nullptr;
     return morphMgr->GetMorph(name);
 }
-
-void Usage()
-{
-    std::cout << "app [-model <pmd|pmx file path>] [-vmd <vmd file path>]\n";
-    std::cout << "e.g. app -model model1.pmx -vmd anim1_1.vmd -vmd anim1_2.vmd  -model model2.pmx\n";
-}
-
-#if _WIN32
-#include <Windows.h>
-#include <shellapi.h>
-#endif
 class MMDViewer
 {
 public:
     std::vector<std::string> m_args;
     AppContext appContext;
-    bool enableTransparentWindow = false;
     std::string m_modelPath;
     std::unique_ptr<saba::VMDAnimation> vmdAnim = std::make_unique<saba::VMDAnimation>();
-    Model model;
     double fpsTime = saba::GetTime();
     int fpsFrame = 0;
     double saveTime = saba::GetTime();
     int width, height;
+    std::vector<Model *> m_models;
     MMDViewer() {}
 
     bool init()
@@ -1113,45 +1099,6 @@ public:
         appContext.m_screenHeight = height;
         return true;
     }
-    Model *get_model()
-    {
-        return &model;
-    }
-    bool load_model(std::string m_modelPath)
-    {
-        auto ext = saba::PathUtil::GetExt(m_modelPath);
-        if (ext == "pmd")
-        {
-            auto pmdModel = std::make_unique<saba::PMDModel>();
-            if (!pmdModel->Load(m_modelPath, appContext.m_mmdDir))
-            {
-                std::cout << "Failed to load pmd file.\n";
-                return false;
-            }
-            model.m_mmdModel = std::move(pmdModel);
-        }
-        else if (ext == "pmx")
-        {
-            auto pmxModel = std::make_unique<saba::PMXModel>();
-            if (!pmxModel->Load(m_modelPath, appContext.m_mmdDir))
-            {
-                std::cout << "Failed to load pmx file.\n";
-                return false;
-            }
-            model.m_mmdModel = std::move(pmxModel);
-        }
-        else
-        {
-            std::cout << "Unknown file type. [" << ext << "]\n";
-            return false;
-        }
-        model.m_mmdModel->InitializeAnimation();
-        // vmdAnim->SyncPhysics(0.0f);
-
-        // model.m_vmdAnim = std::move(vmdAnim);
-        model.Setup(this->appContext);
-        return true;
-    }
     void resize(int w, int h)
     {
         width = w;
@@ -1159,52 +1106,36 @@ public:
         appContext.m_screenWidth = w;
         appContext.m_screenHeight = h;
     }
-    bool load_vmd(std::string vmdPath)
+    void update()
     {
-        if (!vmdAnim->Create(model.m_mmdModel))
+        double time = saba::GetTime();
+        double elapsed = time - saveTime;
+        if (elapsed > 1.0 / 30.0)
         {
-            std::cout << "Failed to create VMDAnimation.\n";
-            return false;
+            elapsed = 1.0 / 30.0;
         }
-
-        saba::VMDFile vmdFile;
-        if (!saba::ReadVMDFile(&vmdFile, vmdPath.c_str()))
+        saveTime = time;
+        appContext.m_elapsed = float(elapsed);
+        appContext.m_animTime += float(elapsed);
+        for (auto *model : m_models)
         {
-            std::cout << "Failed to read VMD file.\n";
-            return false;
+            model->UpdateAnimation(appContext);
+            model->Update(appContext);
         }
-        if (!vmdAnim->Add(vmdFile))
-        {
-            std::cout << "Failed to add VMDAnimation.\n";
-            return false;
-        }
-        if (!vmdFile.m_cameras.empty())
-        {
-            auto vmdCamAnim = std::make_unique<saba::VMDCameraAnimation>();
-            if (!vmdCamAnim->Create(vmdFile))
-            {
-                std::cout << "Failed to create VMDCameraAnimation.\n";
-            }
-            appContext.m_vmdCameraAnim = std::move(vmdCamAnim);
-        }
-
-        vmdAnim->SyncPhysics(0.0f);
-
-        model.m_vmdAnim = std::move(vmdAnim);
-        return true;
     }
-    void update(float deltaTime)
+    void add_model(Model *model)
     {
-        appContext.m_elapsed = deltaTime;
-        appContext.m_animTime += deltaTime;
-        model.UpdateAnimation(appContext);
-        model.Update(appContext);
+        m_models.push_back(model);
     }
-    void draw()
+
+    void draw(Model *model)
+    {
+        glViewport(0, 0, width, height);
+        model->Draw(appContext);
+    }
+    void clear_screen()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        glViewport(0, 0, width, height);
-        model.Draw(appContext);
     }
     void close()
     {
@@ -1244,15 +1175,84 @@ public:
         appContext.SetResourcePath(path);
     }
 };
+bool Model::Load(const std::string &modelPath, MMDViewer *viewer)
+{
+    auto ext = saba::PathUtil::GetExt(modelPath);
+    if (ext == "pmd")
+    {
+        auto pmdModel = std::make_unique<saba::PMDModel>();
+        if (!pmdModel->Load(modelPath, viewer->appContext.m_mmdDir))
+            return false;
+        m_mmdModel = std::move(pmdModel);
+    }
+    else if (ext == "pmx")
+    {
+        auto pmxModel = std::make_unique<saba::PMXModel>();
+        if (!pmxModel->Load(modelPath, viewer->appContext.m_mmdDir))
+            return false;
+        m_mmdModel = std::move(pmxModel);
+    }
+    else
+    {
+        return false;
+    }
 
+    m_mmdModel->InitializeAnimation();
+    Setup(viewer->appContext);
+    return true;
+}
+bool Model::load_vmd(const std::string &vmdPath)
+{
+    // 创建动画
+    auto vmdAnim = std::make_unique<saba::VMDAnimation>();
+
+    if (!vmdAnim->Create(m_mmdModel))
+    {
+        std::cout << "Failed to create VMDAnimation.\n";
+        return false;
+    }
+
+    saba::VMDFile vmdFile;
+    if (!saba::ReadVMDFile(&vmdFile, vmdPath.c_str()))
+    {
+        std::cout << "Failed to read VMD file.\n";
+        return false;
+    }
+
+    if (!vmdAnim->Add(vmdFile))
+    {
+        std::cout << "Failed to add VMDAnimation.\n";
+        return false;
+    }
+
+    // 相机动画（给 viewer）
+    if (!vmdFile.m_cameras.empty())
+    {
+        auto vmdCamAnim = std::make_unique<saba::VMDCameraAnimation>();
+        if (vmdCamAnim->Create(vmdFile))
+        {
+            m_viewer->appContext.m_vmdCameraAnim = std::move(vmdCamAnim);
+        }
+    }
+
+    vmdAnim->SyncPhysics(0.0f);
+
+    // 把动画绑定到模型
+    m_vmdAnim = std::move(vmdAnim);
+
+    return true;
+}
+Model::Model(const std::string &modelPath, MMDViewer *viewer)
+{
+    m_viewer = viewer;
+    Load(modelPath, viewer);
+}
 PYBIND11_MODULE(mmd, m)
 {
     // m.def("samplemain", &SampleMain, "Run MMD Viewer with command line args");
     py::class_<MMDViewer>(m, "MMDViewer")
         .def(py::init<>())
         .def("init", &MMDViewer::init)
-        .def("load_model", &MMDViewer::load_model)
-        .def("load_vmd", &MMDViewer::load_vmd)
         .def("update", &MMDViewer::update)
         .def("draw", &MMDViewer::draw)
         .def("close", &MMDViewer::close)
@@ -1260,9 +1260,8 @@ PYBIND11_MODULE(mmd, m)
         .def("setup_camera", &MMDViewer::setup_camera)
         .def("resize", &MMDViewer::resize)
         .def("set_resource_path", &MMDViewer::set_resource_path)
-        .def("get_model", &MMDViewer::get_model, py::return_value_policy::reference_internal);
-    // 绑定 MMDNode 骨骼
-    // 绑定 MMDNode 骨骼
+        .def("add_model", &MMDViewer::add_model)
+        .def("clear_screen", &MMDViewer::clear_screen);
     py::class_<saba::MMDNode>(m, "MMDNode")
         .def("get_name", &saba::MMDNode::GetName)
         .def("get_position", [](saba::MMDNode &self)
@@ -1297,8 +1296,8 @@ PYBIND11_MODULE(mmd, m)
         .def("set_weight", &saba::MMDMorph::SetManualAnimationMorph)
         .def("get_weight", &saba::MMDMorph::GetWeight)
         .def("set_manual_control", &saba::MMDMorph::SetManualControl);
-    py::class_<Model>(m, "Model")
-        .def(py::init<>())
+    py::class_<Model, std::unique_ptr<Model>>(m, "Model") // 👈 加这个！
+        .def(py::init<const std::string &, MMDViewer *>())
         .def("Setup", &Model::Setup)
         .def("Clear", &Model::Clear)
         .def("UpdateAnimation", &Model::UpdateAnimation)
@@ -1308,5 +1307,6 @@ PYBIND11_MODULE(mmd, m)
         .def("get_morph", &Model::getMorph, py::return_value_policy::reference_internal)
         .def("set_position", &Model::setPosition, py::return_value_policy::reference_internal)
         .def("set_scale", &Model::setScale, py::return_value_policy::reference_internal)
-        .def("set_rotation", &Model::setRotation, py::return_value_policy::reference_internal);
+        .def("set_rotation", &Model::setRotation, py::return_value_policy::reference_internal)
+        .def("load_vmd", &Model::load_vmd);
 }

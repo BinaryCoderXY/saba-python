@@ -30,7 +30,7 @@
 #include <Saba/Model/MMD/VMDCameraAnimation.h>
 namespace py = pybind11;
 struct AppContext;
-
+class MMDViewer;
 struct Input
 {
     std::string m_modelPath;
@@ -213,6 +213,9 @@ struct Material
 
 struct Model
 {
+
+    Model(Model &&) = default;
+    Model &operator=(Model &&) = default;
     std::shared_ptr<saba::MMDModel> m_mmdModel;
     std::unique_ptr<saba::VMDAnimation> m_vmdAnim;
 
@@ -245,4 +248,8 @@ struct Model
 
     // 3. 获取表情（转发到 m_mmdModel）
     saba::MMDMorph *getMorph(const std::string &name);
+    MMDViewer *m_viewer;
+    bool Load(const std::string &modelPath, MMDViewer *viewer);
+    bool load_vmd(const std::string &vmdPath);
+    Model(const std::string &modelPath, MMDViewer *viewer);
 };

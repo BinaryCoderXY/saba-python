@@ -5,15 +5,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(PYTHON_EXECUTABLE python3.12)
-# 自动下载 pybind11
-find_package(pybind11)
+
 find_package(OpenGL)
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
 add_subdirectory(saba/external/glfw)
 add_subdirectory(saba)
 # 编译 saba
-#add_subdirectory(saba)
+add_subdirectory(pybind11)
 include_directories(.)
 include_directories(saba/src)
 include_directories(saba/external)

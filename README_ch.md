@@ -7,6 +7,7 @@
 - 加载并播放任何VMD动作
 - 完整的骨骼和表情支持
 - GLFW作为渲染窗口
+- 支持添加多模型
 
 # Installation
 通过cmake和make进行编译
@@ -30,6 +31,8 @@ pip install glfw
 import glfw
 import mmd
 glfw.init()
+# 可选：启用透明窗口（取消下方注释）
+#glfw.window_hint(glfw.TRANSPARENT_FRAMEBUFFER, glfw.TRUE) 
 glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 3)
 glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 2)
 glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
@@ -39,14 +42,20 @@ glfw.make_context_current(window)
 viewer = mmd.MMDViewer()
 viewer.set_resource_path("/path/to/your/resource") #Resource资源文件夹一般在编译完成后的build/saba文件夹内
 viewer.init()
-viewer.load_model("/path/to/your/model.pmx")
-viewer.load_vmd("/path/to/your/motion.vmd")
+model1 = mmd.Model("/path/to/your/first/model.pmx",viewer)
+model2 = mmd.Model("/path/to/your/second/model.pmx",viewer)
+viewer.add_model(model1)
+viewer.add_model(model2)
+model1.load_vmd("/path/to/your/motion1.vmd")
+model2.load_vmd("/path/to/your/motion2.vmd")
 while not glfw.window_should_close(window):
     w, h = glfw.get_framebuffer_size(window)
     viewer.resize(w, h)
     viewer.setup_camera()
-    viewer.update(1/60)
-    viewer.draw()
+    viewer.update()
+    viewer.clear_screen() #必须要在draw之前清屏
+    viewer.draw(model1)
+    viewer.draw(model2)
     glfw.swap_buffers(window)
     glfw.poll_events()
 
@@ -56,9 +65,9 @@ glfw.terminate()
 ## 控制骨骼和表情
 ``` python
 #....your model and motion loading code
-bone = model.get_bone("頭") 
+bone = model1.get_bone("頭") 
 bone.set_manual_control(True)
-morph = model.get_morph("笑い")
+morph = model1.get_morph("笑い")
 morph.set_manual_control(True)
 while not glfw.window_should_close(window):
     #...others....
@@ -68,7 +77,7 @@ while not glfw.window_should_close(window):
     bone.set_position(1,0.41,0.5,0.5)
     # Control morph weight: weight value, blend ratio
     morph.set_weight(0.8,0.5) 
-    viewer.draw()
+    viewer.draw(model1)
     #...others.....
 
 viewer.close()
