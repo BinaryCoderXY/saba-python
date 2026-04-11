@@ -1,6 +1,0 @@
-[submodule "external/glfw"]
-	path = external/glfw
-	url = https://gh-proxy.org/https://github.com/glfw/glfw.git
-[submodule "external/glslang"]
-	path = external/glslang
-	url = https://gitcode.com/gh_mirrors/gl/glslang.git
