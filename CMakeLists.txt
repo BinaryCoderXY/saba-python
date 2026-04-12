@@ -34,8 +34,6 @@ pybind11_add_module(saba
 
 # 链接 saba
 target_link_libraries(saba PRIVATE Saba)
-add_custom_command(TARGET saba POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_BINARY_DIR}/saba/resource    
-        $<TARGET_FILE_DIR:saba>/resource     
+install(DIRECTORY ${CMAKE_BINARY_DIR}/saba/resource
+    DESTINATION resource
 )

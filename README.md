@@ -15,9 +15,9 @@ git clone https://github.com/BinaryCoderXY/saba-python.git
 cd saba-python
 git submodule update --init --recursive
 ```
-Install by using setup.py:
+Install by using pip:
 ```bash
-python setup.py install
+pip install .
 ```
 Compile by using cmake and make:
 ```bash
