@@ -1,14 +1,19 @@
 # saba-python
 ### [English](https://github.com/BinaryCoderXY/saba-python/blob/main/README.md) [中文](https://github.com/BinaryCoderXY/saba-python/blob/main/README_ch.md) 
 Python binding for [Saba](https://github.com/benikabocha/saba) library | MMD (MikuMikuDance) real-time rendering &amp; bone control in Python,can render VMD motion and PMX model **Modified Saba source code by myself.**.Made by a junior high school student.
-# Features
+## Features
 - Python binding for Saba MMD renderer
 - Load and render PMX / PMD models
 - Load and play VMD motion files
 - Full bone control & morph (face / lip-sync) support
 - GLFW real-time window rendering
 - Support adding multiple models
-# Installation
+## Supported Platforms
+ - ✅ macOS (Primary)
+ - ✅ Linux (Untested, but should work with existing code)
+ - ❌ Windows (Not supported yet; not recommended to run on Windows)
+ - ❓ HarmonyOS (Uh-oh, I have no idea yet. I'll look into it when I have time >_<)
+## Installation
 Use git to clone the repository:
 ```bash
 git clone https://github.com/BinaryCoderXY/saba-python.git
@@ -31,7 +36,7 @@ After compilation, you will get file like saba-cpython*.so file,that is the pyth
 pip install glfw
 ```
 in your python environment.
-# Example
+## Example
 If you used CMake and make for compiling, Make sure the saba-cpython*.so file **in the same folder** before using.
 ## Rendering PMX model and VMD motion:
 ``` python
@@ -91,8 +96,3 @@ glfw.terminate()
 ```
 The **blend** argument can set the blend ratio between manual settings and original VMD animation settings.**A higher blend value means your manual control has more influence.**
 
-## Supported Platforms
- - ✅ macOS (Primary)
- - ✅ Linux (Untested, but should work with existing code)
- - ❌ Windows (Not supported yet; not recommended to run on Windows)
- - ❓ HarmonyOS (Uh-oh, I have no idea yet. I'll look into it when I have time >_<)

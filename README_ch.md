@@ -1,15 +1,19 @@
 # saba-python
 ### [English](https://github.com/BinaryCoderXY/saba-python/blob/main/README.md)  [中文](https://github.com/BinaryCoderXY/saba-python/blob/main/README_ch.md) 
 给项目[Saba](https://github.com/benikabocha/saba)写的python支持| MMD (MikuMikuDance) 实时渲染 （我修改了部分Saba的源代码）&amp; 由python控制骨骼，可以渲染vmd动作和pmx模型.由一名初中生制作。
-# Features
+## 功能特点
 - Saba MMD的Python 绑定
 - 加载PMX模型
 - 加载并播放任何VMD动作
 - 完整的骨骼和表情支持
 - GLFW作为渲染窗口
 - 支持添加多模型
-
-# Installation
+## 支持的系统
+ - ✅ macOS (完整支持)
+ - ✅ Linux (暂未测试,但现有代码应该可以跑)
+ - ❌ Windows (暂不支持，不建议在Windows上跑)
+ - ❓ HarmonyOS (啊吧啊吧，我还不知道。等我有时间再去熟悉鸿蒙系统吧 >_<)
+## 安装
 克隆仓库
 ```bash
 git clone https://github.com/BinaryCoderXY/saba-python.git
@@ -31,7 +35,7 @@ make
 ```bash
 pip install glfw
 ```
-# Example
+## 例子
 如果使用的是cmake和make进行的自行编译，使用前保证 saba-cpython*.so 文件在 **同一个文件夹下** 
 ## 渲染一个MMD的PMX模型和VMD动作
 ``` python
@@ -90,8 +94,3 @@ viewer.close()
 glfw.terminate()
 ```
 这个**blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.**
-## 支持的系统
- - ✅ macOS (完整支持)
- - ✅ Linux (暂未测试,但现有代码应该可以跑)
- - ❌ Windows (暂不支持，不建议在Windows上跑)
- - ❓ HarmonyOS (啊吧啊吧，我还不知道。等我有时间再去熟悉鸿蒙系统吧 >_<)
