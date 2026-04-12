@@ -10,26 +10,33 @@
 - 支持添加多模型
 
 # Installation
-通过cmake和make进行编译
+克隆仓库
 ```bash
 git clone https://github.com/BinaryCoderXY/saba-python.git
 cd saba-python
 git submodule update --init --recursive
+```
+通过setup.py安装
+```bash
+python setup.py install
+```
+通过cmake和make进行编译
+```bash
 mkdir build 
 cd build
 cmake ..
 make
 ```
-编译完成后，你会得到一个文件名类似于 mmd-cpython*.so 的文件,目前仅支持glfw创建窗口.在你的python环境中运行
+编译完成后，你会得到一个文件名类似于 saba-cpython*.so 的文件,目前仅支持glfw创建窗口.在你的python环境中运行
 ```bash
 pip install glfw
 ```
 # Example
-使用前保证 mmd-cpython*.so 文件在 **同一个文件夹下** 
+如果使用的是cmake和make进行的自行编译，使用前保证 saba-cpython*.so 文件在 **同一个文件夹下** 
 ## 渲染一个MMD的PMX模型和VMD动作
 ``` python
 import glfw
-import mmd
+import saba as mmd
 glfw.init()
 # 可选：启用透明窗口（取消下方注释）
 #glfw.window_hint(glfw.TRANSPARENT_FRAMEBUFFER, glfw.TRUE) 

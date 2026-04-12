@@ -9,28 +9,34 @@ Python binding for [Saba](https://github.com/benikabocha/saba) library | MMD (Mi
 - GLFW real-time window rendering
 - Support adding multiple models
 # Installation
-Compile by using cmake and make
+Use git to clone the repository:
 ```bash
 git clone https://github.com/BinaryCoderXY/saba-python.git
 cd saba-python
 git submodule update --init --recursive
+```
+Install by using setup.py:
+```bash
+python setup.py install
+```
+Compile by using cmake and make:
+```bash
 mkdir build 
 cd build
 cmake ..
 make
 ```
-After compilation, you will get file like mmd-cpython*.so file,that is the python package
-saba-python currently  only support glfw window. Please run
+After compilation, you will get file like saba-cpython*.so file,that is the python package. saba-python currently only support glfw window. Please run
 ```bash
 pip install glfw
 ```
 in your python environment.
 # Example
-Make sure the mmd-cpython*.so file **in the same folder** before using.
+If you used CMake and make for compiling, Make sure the saba-cpython*.so file **in the same folder** before using.
 ## Rendering PMX model and VMD motion:
 ``` python
 import glfw
-import mmd
+import saba as mmd
 glfw.init()
 # Optional: Enable transparent window (uncomment below).
 #glfw.window_hint(glfw.TRANSPARENT_FRAMEBUFFER, glfw.TRUE) 
