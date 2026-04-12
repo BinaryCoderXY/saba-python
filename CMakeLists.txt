@@ -12,7 +12,7 @@ include_directories(${OPENGL_INCLUDE_DIR})
 add_subdirectory(saba/external/glfw)
 add_subdirectory(saba)
 # 编译 saba
-add_subdirectory(pybind11)
+add_subdirectory(./pybind11)
 include_directories(.)
 include_directories(saba/src)
 include_directories(saba/external)
