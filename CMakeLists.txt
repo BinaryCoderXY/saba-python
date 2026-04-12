@@ -34,6 +34,7 @@ pybind11_add_module(saba
 
 # 链接 saba
 target_link_libraries(saba PRIVATE Saba)
+# 复制resource资源文件夹到安装目录
 install(DIRECTORY ${CMAKE_BINARY_DIR}/saba/resource
     DESTINATION resource
 )
