@@ -38,7 +38,7 @@ pip install glfw
 in your python environment.
 ## Example
 If you used CMake and make for compiling, Make sure the saba-cpython*.so file **in the same folder** before using.
-## Rendering PMX model and VMD motion:
+### Rendering PMX model and VMD motion:
 ``` python
 import glfw
 import saba as mmd
@@ -73,7 +73,7 @@ while not glfw.window_should_close(window):
 viewer.close()
 glfw.terminate()
 ```
-## Controlling bones and morph:
+### Controlling bones and morph:
 ``` python
 #....your model and motion loading code
 bone = model1.get_bone("頭") 

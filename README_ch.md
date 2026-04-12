@@ -37,7 +37,7 @@ pip install glfw
 ```
 ## 例子
 如果使用的是cmake和make进行的自行编译，使用前保证 saba-cpython*.so 文件在 **同一个文件夹下** 
-## 渲染一个MMD的PMX模型和VMD动作
+### 渲染一个MMD的PMX模型和VMD动作
 ``` python
 import glfw
 import saba as mmd
@@ -72,7 +72,7 @@ while not glfw.window_should_close(window):
 viewer.close()
 glfw.terminate()
 ```
-## 控制骨骼和表情
+### 控制骨骼和表情
 ``` python
 #....your model and motion loading code
 bone = model1.get_bone("頭") 
@@ -93,4 +93,4 @@ while not glfw.window_should_close(window):
 viewer.close()
 glfw.terminate()
 ```
-这个**blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.**
+这个 **blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.**
