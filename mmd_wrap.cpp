@@ -1,6 +1,14 @@
 
 #include "./mmd_wrap.h"
 
+std::string get_resource_path()
+{
+    py::gil_scoped_acquire gil;
+    py::module m = py::module::import("saba");
+    std::string module_file = m.attr("__file__").cast<std::string>();
+    fs::path module_dir = fs::path(module_file).parent_path();
+    return (module_dir / "resource").string();
+}
 GLuint CreateShader(GLenum shaderType, const std::string code)
 {
     GLuint shader = glCreateShader(shaderType);
@@ -1078,7 +1086,10 @@ public:
     double saveTime = saba::GetTime();
     int width, height;
     std::vector<Model *> m_models;
-    MMDViewer() {}
+    MMDViewer()
+    {
+        appContext.SetResourcePath(get_resource_path());
+    }
 
     bool init()
     {
@@ -1170,10 +1181,6 @@ public:
             appContext.m_projMat = glm::perspectiveFovRH(glm::radians(30.0f), float(width), float(height), 1.0f, 10000.0f);
         }
     }
-    void set_resource_path(const std::string &path)
-    {
-        appContext.SetResourcePath(path);
-    }
 };
 bool Model::Load(const std::string &modelPath, MMDViewer *viewer)
 {
@@ -1258,7 +1265,6 @@ PYBIND11_MODULE(saba, m)
         .def("fps", &MMDViewer::fps)
         .def("setup_camera", &MMDViewer::setup_camera)
         .def("resize", &MMDViewer::resize)
-        .def("set_resource_path", &MMDViewer::set_resource_path)
         .def("add_model", &MMDViewer::add_model)
         .def("clear_screen", &MMDViewer::clear_screen);
     py::class_<saba::MMDNode>(m, "MMDNode")

@@ -28,6 +28,9 @@
 #include <Saba/Model/MMD/VMDFile.h>
 #include <Saba/Model/MMD/VMDAnimation.h>
 #include <Saba/Model/MMD/VMDCameraAnimation.h>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 namespace py = pybind11;
 struct AppContext;
 class MMDViewer;
