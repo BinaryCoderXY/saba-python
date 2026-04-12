@@ -47,7 +47,6 @@ glfw.window_hint(glfw.SAMPLES, 4)
 window = glfw.create_window(1280, 800, "MMD", None, None)
 glfw.make_context_current(window)
 viewer = mmd.MMDViewer()
-viewer.set_resource_path("/path/to/your/resource") #Resource资源文件夹一般在编译完成后的build/saba文件夹内
 viewer.init()
 model1 = mmd.Model("/path/to/your/first/model.pmx",viewer)
 model2 = mmd.Model("/path/to/your/second/model.pmx",viewer)
