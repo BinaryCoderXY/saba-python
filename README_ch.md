@@ -14,29 +14,29 @@
  - ❌ Windows (暂不支持，不建议在Windows上跑)
  - ❓ HarmonyOS (啊吧啊吧，我还不知道。等我有时间再去熟悉鸿蒙系统吧 >_<)
 ## 安装
-克隆仓库
+克隆仓库：
 ```bash
 git clone https://github.com/BinaryCoderXY/saba-python.git
 cd saba-python
 git submodule update --init --recursive
 ```
-使用pip安装
+使用pip安装：
 ```bash
 pip install .
 ```
-通过cmake和make进行编译
+通过cmake和make进行编译：
 ```bash
 mkdir build 
 cd build
 cmake ..
 make
 ```
-编译完成后，你会得到一个文件名类似于 saba-cpython*.so 的文件,目前仅支持glfw创建窗口.在你的python环境中运行
+编译完成后，你会得到一个文件名类似于 saba-cpython*.so 的文件,目前仅支持glfw创建窗口.在你的python环境中运行：
 ```bash
 pip install glfw
 ```
 ## 例子
-如果使用的是cmake和make进行的自行编译，使用前保证 saba-cpython*.so 文件在 **同一个文件夹下** 
+如果使用的是cmake和make进行的自行编译，使用前保证 saba-cpython*.so 文件在 **同一个文件夹下**。
 ### 渲染一个MMD的PMX模型和VMD动作
 ``` python
 import glfw
@@ -93,4 +93,4 @@ while not glfw.window_should_close(window):
 viewer.close()
 glfw.terminate()
 ```
-这个 **blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.**
+这个 **blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显**。
