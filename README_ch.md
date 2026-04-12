@@ -90,3 +90,8 @@ viewer.close()
 glfw.terminate()
 ```
 这个**blend** 参数是用来调整骨骼和动作原本vmd动画和人工设计的混合比例between .**混合blend数值越大，人工调整越明显.**
+## 支持的系统
+ - ✅ macOS (完整支持)
+ - ✅ Linux (暂未测试,但现有代码应该可以跑)
+ - ❌ Windows (暂不支持，不建议在Windows上跑)
+ - ❓ HarmonyOS (啊吧啊吧，我还不知道。等我有时间再去熟悉鸿蒙系统吧 >_<)

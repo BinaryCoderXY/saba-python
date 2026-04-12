@@ -90,3 +90,9 @@ viewer.close()
 glfw.terminate()
 ```
 The **blend** argument can set the blend ratio between manual settings and original VMD animation settings.**A higher blend value means your manual control has more influence.**
+
+## Supported Platforms
+ - ✅ macOS (Primary)
+ - ✅ Linux (Untested, but should work with existing code)
+ - ❌ Windows (Not supported yet; not recommended to run on Windows)
+ - ❓ HarmonyOS (Uh-oh, I have no idea yet. I'll look into it when I have time >_<)
