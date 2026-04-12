@@ -1247,9 +1247,8 @@ Model::Model(const std::string &modelPath, MMDViewer *viewer)
     m_viewer = viewer;
     Load(modelPath, viewer);
 }
-PYBIND11_MODULE(mmd, m)
+PYBIND11_MODULE(saba, m)
 {
-    // m.def("samplemain", &SampleMain, "Run MMD Viewer with command line args");
     py::class_<MMDViewer>(m, "MMDViewer")
         .def(py::init<>())
         .def("init", &MMDViewer::init)
@@ -1296,7 +1295,7 @@ PYBIND11_MODULE(mmd, m)
         .def("set_weight", &saba::MMDMorph::SetManualAnimationMorph)
         .def("get_weight", &saba::MMDMorph::GetWeight)
         .def("set_manual_control", &saba::MMDMorph::SetManualControl);
-    py::class_<Model, std::unique_ptr<Model>>(m, "Model") // 👈 加这个！
+    py::class_<Model, std::unique_ptr<Model>>(m, "Model")
         .def(py::init<const std::string &, MMDViewer *>())
         .def("Setup", &Model::Setup)
         .def("Clear", &Model::Clear)
