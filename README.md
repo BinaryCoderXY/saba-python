@@ -31,7 +31,7 @@ cd build
 cmake ..
 make
 ```
-After compilation, you will get file like saba-cpython*.so file,that is the python package. saba-python currently only support glfw window. Please run
+After compilation, you will get file like saba-cpython*.so file,that is the python package. saba-python currently only support glfw window. Please run:
 ```bash
 pip install glfw
 ```
